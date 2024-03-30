@@ -16,43 +16,64 @@ export const isApiError = (error) => axios.isAxiosError(error);
 
 const withAbort = (fn) => {
   const executor = async (...args) => {
-    const originalConfig = args[args.length-1]
-    const {abort, ...config} = originalConfig
+    const originalConfig = args[args.length - 1];
+    const { abort, ...config } = originalConfig;
 
-    if(typeof abort === "function") {
-      const {cancel, token} = getCancelSource()
-      config.cancelToken = token
-      abort(cancel)
+    if (typeof abort === 'function') {
+      const { cancel, token } = getCancelSource();
+      config.cancelToken = token;
+      abort(cancel);
     }
 
     try {
-      if(args.length > 2) {
-        const [url, body] = args
-        return await fn(url, body, config)
+      if (args.length > 2) {
+        const [url, body] = args;
+        return await fn(url, body, config);
       } else {
-        const [url] = args
-        return await fn(url, config)
+        const [url] = args;
+        return await fn(url, config);
       }
-    } catch(error) {
-      if(didAbort(error)) {
-        error.aborted = true
+    } catch (error) {
+      if (didAbort(error)) {
+        error.aborted = true;
       }
 
-      throw error
+      throw error;
     }
-  }
+  };
 
-  return executor
+  return executor;
+};
+
+const withLogging = async (promise) => {
+  promise.catch((error) => {
+    if (process.env.REACT_APP_DEBUG_API) throw error;
+
+    if (error.response) {
+      console.log(error.response.data);
+      console.log(error.response.status);
+      console.log(error.response.headers);
+    } else if (error.request) {
+      console.log(error.request);
+    } else {
+      console.log('Error', error.message);
+    }
+    console.log(error.config);
+    throw error;
+  });
 };
 
 const api = (axios) => {
   return {
-    get: (url, config = {}) => withAbort(axios.get)(url, config),
-    delete: (url, config = {}) => withAbort(axios.delete)(url, config),
-    post: (url, body, config = {}) => withAbort(axios.post)(url, body, config),
+    get: (url, config = {}) => withLogging(withAbort(axios.get)(url, config)),
+    delete: (url, config = {}) =>
+      withLogging(withAbort(axios.delete)(url, config)),
+    post: (url, body, config = {}) =>
+      withLogging(withAbort(axios.post)(url, body, config)),
     patch: (url, body, config = {}) =>
-      withAbort(axios.patch)(url, body, config),
-    put: (url, body, config = {}) => withAbort(axios.put)(url, body, config),
+      withLogging(withAbort(axios.patch)(url, body, config)),
+    put: (url, body, config = {}) =>
+      withLogging(withAbort(axios.put)(url, body, config)),
   };
 };
 
