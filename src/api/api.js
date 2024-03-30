@@ -45,7 +45,7 @@ const withAbort = (fn) => {
   return executor;
 };
 
-const withLogging = async (promise) => {
+const withLogging = async (promise) =>
   promise.catch((error) => {
     if (process.env.REACT_APP_DEBUG_API) throw error;
 
@@ -61,7 +61,6 @@ const withLogging = async (promise) => {
     console.log(error.config);
     throw error;
   });
-};
 
 const api = (axios) => {
   return {
