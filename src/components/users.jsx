@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { fetchUser } from '../api/userApi';
+import { fetchUsers } from '../api/userApi';
 import styled from 'styled-components';
 import LazyLoader from './lazy-loader';
 import { useApi } from '../api/hooks/useApi';
@@ -9,19 +9,19 @@ const useFetchUsers = () => {
     data: users,
     exec: initFetchUsers,
     status: fetchUsersStatus,
-    isIdle: isFetchUserStatusIdle,
-    isPending: isFetchUserStatusPending,
-    isError: isFetchUserStatusError,
-    isSuccess: isFetchUserStatusSuccess
-  } = useApi(() => fetchUser().then((response) => response.data))
+    isIdle: isFetchUsersStatusIdle,
+    isPending: isFetchUsersStatusPending,
+    isError: isFetchUsersStatusError,
+    isSuccess: isFetchUsersStatusSuccess,
+  } = useApi(() => fetchUsers().then((response) => response.data));
 
   return {
     users,
+    isFetchUsersStatusIdle,
+    isFetchUsersStatusPending,
+    isFetchUsersStatusError,
+    isFetchUsersStatusSuccess,
     initFetchUsers,
-    isFetchUserStatusIdle,
-    isFetchUserStatusPending,
-    isFetchUserStatusError,
-    isFetchUserStatusSuccess,
   };
 };
 
@@ -57,13 +57,13 @@ const FetchButton = styled.button`
   padding: 1rem;
 `;
 
-function Users() {
+const Users = () => {
   const {
     users,
-    isFetchUserStatusIdle,
-    isFetchUserStatusError,
-    isFetchUserStatusPending,
-    isFetchUserStatusSuccess,
+    isFetchUsersStatusError,
+    isFetchUsersStatusIdle,
+    isFetchUsersStatusPending,
+    isFetchUsersStatusSuccess,
     initFetchUsers,
   } = useFetchUsers();
 
@@ -74,7 +74,11 @@ function Users() {
   return (
     <Container>
       <FetchButton onClick={initFetchUsers}>
-        <LazyLoader show={isFetchUserStatusPending} delay={500} default="Fetch Users" />
+        <LazyLoader
+          show={isFetchUsersStatusPending}
+          delay={500}
+          default="Fetch Users"
+        />
       </FetchButton>
       <FlexContainer>
         <ContentContainer>
@@ -90,5 +94,6 @@ function Users() {
       </FlexContainer>
     </Container>
   );
-}
+};
+
 export default Users;

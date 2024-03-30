@@ -15,11 +15,13 @@ const LazyLoader = (props) => {
     } else {
       timeout = setTimeout(() => setShowLoader(true), delay);
     }
+
     return () => {
-      clearInterval(timeout)
-    }
+      clearInterval(timeout);
+    };
   }, [show, delay]);
-  return showLoader ? 'Loading...' : props.default
+
+  return showLoader ? 'Loading...' : props.default;
 };
 
-export default LazyLoader
+export default LazyLoader;

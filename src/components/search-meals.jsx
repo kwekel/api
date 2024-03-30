@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { toast, ToastContainer } from 'react-toastify';
-import "react-toastify/dist/ReactToastify.css"
-import { searchMeals } from '../api/mealApi';
-import { didAbort } from '../api/api';
+import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
+import { didAbort } from '../api/api';
+import { searchMeals } from '../api/mealApi';
 
 const useFetchMeals = () => {
   const [meals, setMeals] = useState([]);
@@ -11,9 +11,11 @@ const useFetchMeals = () => {
 
   const handleQuoteError = (error) => {
     if (didAbort(error)) {
-      toast.error('Request aborted');
+      //Request aborted!
+      toast.error('Request aborted!');
     } else {
-      toast.error('Oh no, error!');
+      //Oh noooo, error!
+      toast.error('Oh noooo, error!');
     }
   };
 
@@ -31,12 +33,10 @@ const useFetchMeals = () => {
   };
 
   return {
-    meals, 
-    fetchMeals
-  }
+    meals,
+    fetchMeals,
+  };
 };
-
-
 
 const Container = styled.div`
   padding-top: 8px;
@@ -106,11 +106,12 @@ const SearchMeal = () => {
       <div>
         <Title>Meals</Title>
         <MealContainer>
-          {meals?.map((meal, index) => (
-            <MealItem odd={index % 2 !== 0} key={meal.idMeal}>
-              <p>{meal.strMeal}</p>
-            </MealItem>
-          ))}
+          {meals &&
+            meals.map((meal, index) => (
+              <MealItem odd={index % 2 !== 0} key={meal.idMeal}>
+                <p>{meal.strMeal}</p>
+              </MealItem>
+            ))}
         </MealContainer>
       </div>
     </Container>

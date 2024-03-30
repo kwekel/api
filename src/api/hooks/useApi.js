@@ -10,29 +10,29 @@ export function useApi(fn, config = {}) {
 
   const exec = async (...args) => {
     try {
-      setStatus(PENDING)
-      const data = await fn(...args)
-      setData(data)
-      setStatus(SUCCESS)
+      setStatus(PENDING);
+      const data = await fn(...args);
+      setData(data);
+      setStatus(SUCCESS);
       return {
         data,
-        error: null
-      }
-    } catch(error) {
-      setError(error)
-      setStatus(ERROR)
+        error: null,
+      };
+    } catch (error) {
+      setError(error);
+      setStatus(ERROR);
       return {
         error,
-        data: null
-      }
+        data: null,
+      };
     }
-  }
+  };
   return {
     data,
     setData,
     status,
     setStatus,
-    exec, 
-    ...normalisedStatuses
-  }
+    exec,
+    ...normalisedStatuses,
+  };
 }

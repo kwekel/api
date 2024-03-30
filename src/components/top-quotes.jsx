@@ -1,6 +1,6 @@
-import { useQuery } from "react-query";
-import styled from "styled-components";
-import { fetchTopQuotes } from "../api/quoteApi";
+import { useQuery } from 'react-query';
+import { fetchTopQuotes } from '../api/quoteApi';
+import styled from 'styled-components';
 
 const Container = styled.div`
   padding-top: 8px;
@@ -69,7 +69,7 @@ const FetchTopQuotes = () => {
     isLoading,
     isSuccess,
     isError,
-  } = useQuery("top-quotes", fetchTopQuotes);
+  } = useQuery('top-quotes', fetchTopQuotes);
 
   return (
     <Container>
@@ -97,4 +97,5 @@ const FetchTopQuotes = () => {
     </Container>
   );
 };
+
 export default FetchTopQuotes;

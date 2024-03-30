@@ -3,7 +3,7 @@ import axios from 'axios';
 const axiosParams = {
   // Base URL should be set via environment
   baseURL:
-    process.env.NODE_ENV === 'development' ? 'http://localhost:9000' : '/',
+    process.env.NODE_ENV === 'development' ? 'http://localhost:9000/' : '/',
 };
 
 const axiosInstance = axios.create(axiosParams);
@@ -45,9 +45,9 @@ const withAbort = (fn) => {
   return executor;
 };
 
-const withLogging = async (promise) =>
+export const withLogger = async (promise) =>
   promise.catch((error) => {
-    if (process.env.REACT_APP_DEBUG_API) throw error;
+    if (!process.env.REACT_APP_DEBUG_API) throw error;
 
     if (error.response) {
       console.log(error.response.data);
@@ -61,18 +61,17 @@ const withLogging = async (promise) =>
     console.log(error.config);
     throw error;
   });
-
 const api = (axios) => {
   return {
-    get: (url, config = {}) => withLogging(withAbort(axios.get)(url, config)),
+    get: (url, config = {}) => withLogger(withAbort(axios.get)(url, config)),
     delete: (url, config = {}) =>
-      withLogging(withAbort(axios.delete)(url, config)),
+      withLogger(withAbort(axios.delete)(url, config)),
     post: (url, body, config = {}) =>
-      withLogging(withAbort(axios.post)(url, body, config)),
+      withLogger(withAbort(axios.post)(url, body, config)),
     patch: (url, body, config = {}) =>
-      withLogging(withAbort(axios.patch)(url, body, config)),
+      withLogger(withAbort(axios.patch)(url, body, config)),
     put: (url, body, config = {}) =>
-      withLogging(withAbort(axios.put)(url, body, config)),
+      withLogger(withAbort(axios.put)(url, body, config)),
   };
 };
 

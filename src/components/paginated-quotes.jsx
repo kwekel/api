@@ -93,7 +93,6 @@ const PaginatedQuotes = () => {
   } = useQuery(['quotes', page], () => fetchQuotesByPage(page), {
     keepPreviousData: true,
   });
-
   return (
     <Container>
       <div>
@@ -146,5 +145,4 @@ const PaginatedQuotes = () => {
     </Container>
   );
 };
-
-export default PaginatedQuotes
+export default PaginatedQuotes;

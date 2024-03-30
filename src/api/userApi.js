@@ -1,11 +1,11 @@
-import api from "./api";
+import api from './api';
 
 const URLS = {
-  fetchUsersUrl: "users",
+  fetchUsersUrl: 'users',
 };
 
-export const fetchUser = () => {
+export const fetchUsers = () => {
   return api.get(URLS.fetchUsersUrl, {
-    baseURL: "https://jsonplaceholder.typicode.com/",
+    baseURL: 'https://jsonplaceholder.typicode.com/',
   });
 };

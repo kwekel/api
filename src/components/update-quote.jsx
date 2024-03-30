@@ -47,7 +47,7 @@ const Button = styled.button`
 const UpdateQuotes = () => {
   const queryClient = useQueryClient();
 
-  const createQuoteMutation = useMutation((e) => postQuote);
+  const createQuoteMutation = useMutation(postQuote);
   const resetQuotesMutation = useMutation((e) => resetQuotes());
 
   const [form, setForm] = useState({
@@ -65,9 +65,8 @@ const UpdateQuotes = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     const { author, quote } = form;
-
     if (!author || !quote) {
-      alert('You have to enter the information first');
+      alert('You have to enter the information first.');
       return;
     }
     await createQuoteMutation.mutate(form, {
@@ -83,7 +82,7 @@ const UpdateQuotes = () => {
     resetQuotesMutation.mutate(e, {
       onSuccess: () => {
         queryClient.invalidateQueries('top-quotes');
-        toast.success('Quotes resetted!');
+        toast.success('Quotes resetted');
       },
     });
   };
@@ -134,4 +133,4 @@ const UpdateQuotes = () => {
   );
 };
 
-export default UpdateQuotes
+export default UpdateQuotes;
